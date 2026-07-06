@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SomaX · 비전 AI 기반 여성 생애주기 심신 통합 케어</title>
+<meta name="description" content="스마트워치 생체신호(HRV)와 호르몬 주기를 분석해 중증 PMS와 우울 전조를 선제적으로 케어하는 예방 중심 디지털 헬스케어 솔루션, SomaX." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:      #F5F7F2;
+    --paper-warm: #FBFCF8;
+    --card:       #FFFFFF;
+    --ink:        #2C3A31;
+    --ink-soft:   #5A6A5F;
+    --sage:       #7A9A85;
+    --sage-deep:  #4E6B58;
+    --sage-line:  #D5E0D6;
+    --petal:      #E6C6CC;
+    --petal-deep: #C98F9B;
+    --mist:       #EAF0EA;
+    --radius:     20px;
+    --radius-sm:  12px;
+    --shadow:     0 1px 2px rgba(44,58,49,.04), 0 18px 40px -22px rgba(44,58,49,.28);
+    --shadow-sm:  0 10px 26px -18px rgba(44,58,49,.35);
+    --maxw:       1160px;
+    --serif:      "Gowun Batang", serif;
+    --sans:       "IBM Plex Sans KR", system-ui, -apple-system, sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; scroll-padding-top:80px; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation:none !important; transition:none !important; }
+  }
+  body{ font-family:var(--sans); color:var(--ink); background:var(--paper); line-height:1.7; -webkit-font-smoothing:antialiased; font-weight:300; }
+  .wrap{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  h1,h2,h3{ font-family:var(--serif); font-weight:700; line-height:1.25; letter-spacing:-.01em; color:var(--ink); }
+  a{ color:inherit; text-decoration:none; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:.78rem; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--sage-deep); }
+  .eyebrow::before{ content:""; width:22px; height:1px; background:var(--sage); display:inline-block; }
+
+  /* ---- 네비게이션 ---- */
+  header{ position:fixed; inset:0 0 auto 0; z-index:100; transition:background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease; }
+  header.scrolled{ background:rgba(245,247,242,.86); backdrop-filter:blur(14px); box-shadow:0 1px 0 rgba(44,58,49,.06); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:74px; }
+  .logo{ font-family:var(--serif); font-weight:700; font-size:1.5rem; letter-spacing:.02em; color:var(--ink); display:flex; align-items:center; gap:2px; }
+  .logo b{ color:var(--sage-deep); }
+  .logo .dot{ color:var(--petal-deep); }
+  .nav-links{ display:flex; align-items:center; gap:32px; }
+  .nav-links a{ font-size:.95rem; font-weight:400; color:var(--ink-soft); position:relative; padding:4px 0; }
+  .nav-links a::after{ content:""; position:absolute; left:0; bottom:-2px; height:1.5px; width:0; background:var(--sage); transition:width .25s ease; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-links a:hover::after{ width:100%; }
+  .btn{ font-family:var(--sans); font-size:.92rem; font-weight:500; cursor:pointer; border:none; border-radius:999px; padding:12px 24px; transition:transform .2s ease, box-shadow .2s ease, background .2s ease; display:inline-block; }
+  .btn-primary{ background:var(--sage-deep); color:#fff; box-shadow:var(--shadow-sm); }
+  .btn-primary:hover{ transform:translateY(-2px); background:#42604c; }
+  .btn-ghost{ background:transparent; color:var(--sage-deep); border:1px solid var(--sage-line); }
+  .btn-ghost:hover{ background:var(--mist); }
+  .menu-toggle{ display:none; background:none; border:none; cursor:pointer; padding:8px; }
+  .menu-toggle span{ display:block; width:24px; height:2px; background:var(--ink); border-radius:2px; margin:5px 0; transition:.3s; }
+
+  /* ---- 히어로 ---- */
+  .hero{ position:relative; padding:150px 0 90px; overflow:hidden; }
+  .hero-bg{ position:absolute; inset:0; z-index:0; }
+  .hero-bg .blob{ position:absolute; border-radius:50%; filter:blur(70px); opacity:.55; }
+  .blob-1{ width:520px; height:520px; background:var(--mist); top:-120px; right:-140px; }
+  .blob-2{ width:360px; height:360px; background:rgba(230,198,204,.4); bottom:-120px; left:-100px; }
+  .hero-grid{ position:relative; z-index:1; display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center; }
+  .hero h1{ font-size:clamp(2.2rem, 5vw, 3.4rem); margin:20px 0 22px; }
+  .hero h1 .accent{ color:var(--sage-deep); }
+  .hero p.lead{ font-size:1.12rem; color:var(--ink-soft); max-width:32em; margin-bottom:14px; }
+  .hero p.sub{ font-size:.98rem; color:var(--ink-soft); max-width:34em; margin-bottom:34px; }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+
+  .signal-card{ background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:26px 26px 20px; border:1px solid rgba(213,224,214,.7); }
+  .signal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .signal-head .t{ font-size:.82rem; color:var(--ink-soft); }
+  .signal-head .live{ display:inline-flex; align-items:center; gap:7px; font-size:.78rem; color:var(--sage-deep); }
+  .signal-head .live i{ width:8px; height:8px; border-radius:50%; background:var(--sage); animation:pulse 2s infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.4; transform:scale(.8);} }
+  .signal-svg{ width:100%; height:150px; display:block; }
+  .wave-path{ stroke-dasharray:1400; stroke-dashoffset:1400; animation:draw 3.2s ease forwards; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .signal-legend{ display:flex; gap:18px; margin-top:14px; flex-wrap:wrap; }
+  .signal-legend span{ display:inline-flex; align-items:center; gap:7px; font-size:.8rem; color:var(--ink-soft); }
+  .signal-legend i{ width:14px; height:3px; border-radius:2px; display:inline-block; }
+  .lg-band{ background:rgba(122,154,133,.35); height:9px !important; width:14px; border-radius:3px; }
+  .lg-signal{ background:var(--sage-deep); }
+  .lg-alert{ background:var(--petal-deep); }
+  .signal-note{ margin-top:14px; font-size:.82rem; color:var(--ink-soft); background:var(--paper); border-radius:var(--radius-sm); padding:11px 14px; border-left:3px solid var(--petal-deep); }
+
+  /* ---- 공통 섹션 ---- */
+  .section-pad{ padding:96px 0; }
+  .section-head{ max-width:46em; margin-bottom:52px; }
+  .section-head h2{ font-size:clamp(1.7rem, 3.6vw, 2.4rem); margin:16px 0 14px; }
+  .section-head p{ color:var(--ink-soft); font-size:1.05rem; }
+
+  /* ---- 우리가 마주한 문제 ---- */
+  .problem{ background:var(--paper-warm); }
+  .problem-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  .p-card{ background:var(--card); border:1px solid var(--sage-line); border-radius:var(--radius); padding:34px 32px; }
+  .p-card .stat{ font-family:var(--serif); font-size:2.4rem; font-weight:700; color:var(--petal-deep); line-height:1; }
+  .p-card h3{ font-size:1.2rem; margin:14px 0 10px; }
+  .p-card p{ color:var(--ink-soft); font-size:.95rem; }
+  .p-source{ margin-top:16px; font-size:.75rem; color:#9aa89e; }
+
+  /* ---- 브랜드 스토리 ---- */
+  .story-quote{ font-family:var(--serif); font-size:clamp(1.4rem,3vw,2rem); line-height:1.5; color:var(--ink); max-width:20em; margin-bottom:20px; }
+  .story-quote em{ color:var(--sage-deep); font-style:normal; }
+  .story-founder{ color:var(--ink-soft); max-width:44em; margin-bottom:44px; }
+  .compare{ display:grid; grid-template-columns:1fr auto 1fr; gap:22px; align-items:center; }
+  .compare-card{ border-radius:var(--radius); padding:32px 30px; border:1px solid var(--sage-line); }
+  .compare-card .tag{ font-size:.78rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
+  .compare-card h3{ font-size:1.25rem; margin:12px 0 10px; }
+  .compare-card p{ color:var(--ink-soft); font-size:.96rem; }
+  .c-before{ background:var(--card); }
+  .c-before .tag{ color:var(--ink-soft); }
+  .c-after{ background:linear-gradient(160deg,#EEF4EE,#F9FBF8); border-color:rgba(122,154,133,.4); }
+  .c-after .tag{ color:var(--sage-deep); }
+  .compare .arrow{ display:flex; align-items:center; justify-content:center; color:var(--sage); }
+
+  /* ---- 보유 핵심 기술 ---- */
+  .features-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .feature{ background:var(--card); border-radius:var(--radius); padding:30px 26px; border:1px solid rgba(213,224,214,.7); transition:transform .25s ease, box-shadow .25s ease; }
+  .feature:hover{ transform:translateY(-6px); box-shadow:var(--shadow); }
+  .feature .ic{ width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; background:var(--mist); margin-bottom:18px; color:var(--sage-deep); }
+  .feature.hl .ic{ background:rgba(230,198,204,.4); color:var(--petal-deep); }
+  .feature .kicker{ font-size:.74rem; letter-spacing:.12em; text-transform:uppercase; color:var(--sage); font-weight:500; }
+  .feature h3{ font-size:1.12rem; margin:6px 0 10px; }
+  .feature p{ color:var(--ink-soft); font-size:.92rem; }
+  .feature .diff{ margin-top:14px; font-size:.82rem; color:var(--sage-deep); border-top:1px dashed var(--sage-line); padding-top:12px; }
+
+  /* ---- 기술 혁신 (다크) ---- */
+  .tech{ background:var(--sage-deep); color:#EAF1EB; }
+  .tech .eyebrow{ color:#C7DBCB; }
+  .tech .eyebrow::before{ background:#9DBBA4; }
+  .tech .section-head h2{ color:#fff; }
+  .tech .section-head p{ color:#C7DBCB; }
+  .tech-grid{ display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+  .tech-block{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:var(--radius); padding:34px 32px; }
+  .tech-block .num{ font-family:var(--serif); font-size:1rem; color:#A9C6B0; letter-spacing:.05em; }
+  .tech-block h3{ color:#fff; font-size:1.3rem; margin:10px 0 14px; }
+  .tech-block p{ color:#D2E1D5; font-size:.98rem; }
+  .tech-block .label{ display:inline-block; margin-top:16px; font-size:.78rem; font-weight:600; letter-spacing:.06em; padding:6px 14px; border-radius:999px; background:rgba(230,198,204,.22); color:#F1D9DD; }
+
+  /* ---- CTA ---- */
+  .cta-band{ text-align:center; padding:80px 0; }
+  .cta-band h2{ font-size:clamp(1.6rem,3.4vw,2.3rem); margin-bottom:14px; }
+  .cta-band p{ color:var(--ink-soft); margin-bottom:28px; }
+
+  /* ---- 푸터 ---- */
+  footer{ background:var(--paper-warm); border-top:1px solid var(--sage-line); padding:64px 0 32px; }
+  .foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; margin-bottom:40px; }
+  .foot-brand .logo{ font-size:1.6rem; margin-bottom:14px; }
+  .foot-brand p{ color:var(--ink-soft); font-size:.92rem; max-width:26em; }
+  .foot-col h4{ font-family:var(--sans); font-size:.82rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); margin-bottom:16px; }
+  .foot-col a{ display:block; color:var(--ink-soft); font-size:.92rem; margin-bottom:10px; }
+  .foot-col a:hover{ color:var(--sage-deep); }
+  .disclaimer{ margin-top:6px; font-size:.78rem; color:var(--ink-soft); background:var(--mist); border-radius:var(--radius-sm); padding:14px 16px; line-height:1.6; }
+  .foot-bottom{ border-top:1px solid var(--sage-line); margin-top:24px; padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .foot-bottom small{ color:#9aa89e; font-size:.82rem; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  :focus-visible{ outline:2px solid var(--sage-deep); outline-offset:3px; border-radius:6px; }
+
+  /* ---- 반응형 ---- */
+  @media (max-width: 980px){
+    .hero-grid{ grid-template-columns:1fr; gap:40px; }
+    .tech-grid{ grid-template-columns:1fr; }
+    .features-grid{ grid-template-columns:repeat(3,1fr); }
+    .foot-grid{ grid-template-columns:1fr 1fr; }
+    .foot-brand{ grid-column:1 / -1; }
+  }
+  @media (max-width: 820px){
+    .features-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 720px){
+    .nav-links{ position:fixed; inset:74px 0 auto 0; flex-direction:column; gap:0; align-items:stretch; background:rgba(245,247,242,.97); backdrop-filter:blur(14px); box-shadow:0 12px 24px -16px rgba(44,58,49,.4); max-height:0; overflow:hidden; transition:max-height .35s ease; padding:0 24px; }
+    .nav-links.open{ max-height:420px; padding:8px 24px 24px; }
+    .nav-links a{ padding:14px 0; border-bottom:1px solid var(--sage-line); }
+    .nav-links .btn{ margin-top:14px; text-align:center; }
+    .menu-toggle{ display:block; }
+    .problem-grid{ grid-template-columns:1fr; }
+    .features-grid{ grid-template-columns:1fr; }
+    .compare{ grid-template-columns:1fr; }
+    .compare .arrow{ transform:rotate(90deg); }
+    .foot-grid{ grid-template-columns:1fr; }
+    .section-pad{ padding:72px 0; }
+    .hero{ padding:120px 0 70px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 네비게이션 ===== -->
+<header id="header">
+  <div class="wrap nav">
+    <a href="#home" class="logo">Soma<b>X</b><span class="dot">.</span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home">홈</a>
+      <a href="#story">브랜드 스토리</a>
+      <a href="#features">핵심 기술</a>
+      <a href="#tech">기술 혁신</a>
+      <a href="#waitlist" class="btn btn-primary">사전 등록</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ===== 히어로 ===== -->
+<section class="hero" id="home">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">비전 AI · 여성 생애주기 심신 통합 케어</span>
+      <h1>아픔 전에,<br>몸이 먼저 <span class="accent">신호</span>를 보냅니다.</h1>
+      <p class="lead">스마트워치 생체신호와 호르몬 주기를 분석해, 중증 PMS와 우울 전조를 미리 알아차리는 예방 중심 디지털 헬스케어 솔루션.</p>
+      <p class="sub">스트레스 호르몬이 몸을 지배하기 전에, SomaX가 먼저 살핍니다.</p>
+      <div class="hero-actions">
+        <a href="#waitlist" class="btn btn-primary">사전 등록하기</a>
+        <a href="#story" class="btn btn-ghost">브랜드 이야기 보기</a>
+      </div>
+    </div>
+
+    <div class="signal-card reveal">
+      <div class="signal-head">
+        <span class="t">생체신호 · 호르몬 주기 모니터링</span>
+        <span class="live"><i></i>실시간 분석</span>
+      </div>
+      <svg class="signal-svg" viewBox="0 0 460 150" preserveAspectRatio="none" aria-hidden="true">
+        <rect x="0" y="52" width="460" height="46" fill="rgba(122,154,133,.16)"></rect>
+        <line x1="0" y1="52" x2="460" y2="52" stroke="rgba(122,154,133,.4)" stroke-width="1" stroke-dasharray="4 5"></line>
+        <line x1="0" y1="98" x2="460" y2="98" stroke="rgba(122,154,133,.4)" stroke-width="1" stroke-dasharray="4 5"></line>
+        <path class="wave-path" d="M0,78 C30,70 45,62 70,72 C95,82 110,96 140,88 C168,80 180,58 208,66 C236,74 250,104 282,92 C312,81 322,60 352,70 C382,80 396,74 420,70 C438,67 450,72 460,70" fill="none" stroke="#4E6B58" stroke-width="2.6" stroke-linecap="round"></path>
+        <circle cx="282" cy="92" r="5.5" fill="#C98F9B"></circle>
+        <circle cx="282" cy="92" r="10" fill="none" stroke="#C98F9B" stroke-width="1.4" opacity=".6"></circle>
+      </svg>
+      <div class="signal-legend">
+        <span><i class="lg-band"></i>안정 케어 밴드</span>
+        <span><i class="lg-signal"></i>생체신호(HRV)</span>
+        <span><i class="lg-alert"></i>전조 감지</span>
+      </div>
+      <p class="signal-note">신호가 위기 구간에 닿기 전, 변화의 전조를 먼저 포착해 미리 알려드립니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 우리가 마주한 문제 ===== -->
+<section class="problem section-pad" id="problem">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">우리가 마주한 문제</span>
+      <h2>매달 반복되는 위기가, 제대로 케어되지 못합니다</h2>
+      <p>호르몬 변화는 여성 생애 중 약 10년에 달하는 신체·정서적 취약 구간을 만듭니다. 그러나 기존 접근은 이 시기를 충분히 살피지 못합니다.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="p-card reveal">
+        <div class="stat">46.1%</div>
+        <h3>일상을 무너뜨리는 중증 PMS</h3>
+        <p>대한민국 가임기 여성의 46.1%가 일상에 지장을 주는 중증 PMS를 매월 경험합니다. 그러나 대다수는 이를 관리가 필요한 상태로 인지하지 못한 채 매달 고통을 버티고 있습니다.</p>
+        <p class="p-source">출처: 질병관리청 생애주기별 여성건강 조사(2024)</p>
+      </div>
+      <div class="p-card reveal">
+        <div class="stat">최대 8배</div>
+        <h3>남성 중심 운동 알고리즘</h3>
+        <p>배란기 전후 릴랙신 호르몬이 인대·관절을 이완시켜 부상 위험이 평소 대비 최대 8배까지 높아집니다. 그런데 시중 운동 앱의 80% 이상이 남성 생체 지표를 기준으로 설계되어, 여성의 호르몬 변동과 관절 취약기를 반영하지 못합니다.</p>
+        <p class="p-source">출처: 스포츠의학 학술보고서(2024), Harvard GenderSci Lab(2024)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 브랜드 스토리 ===== -->
+<section class="section-pad" id="story">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">브랜드 스토리</span>
+      <p class="story-quote">치료제가 아니라, <em>예방과 치유</em>입니다.</p>
+      <p class="story-founder">고통이 찾아온 뒤에 처방하는 약이 아니라, 스트레스 호르몬이 몸을 지배하기 전에 스마트워치 생체신호와 호르몬 주기를 분석해 선제적으로 몸과 마음을 지키는 예방 치유 솔루션. 그것이 SomaX가 시작된 이유입니다.</p>
+    </div>
+    <div class="compare reveal">
+      <div class="compare-card c-before">
+        <span class="tag">지금까지 · 사후 대응</span>
+        <h3>증상이 나타난 뒤에</h3>
+        <p>이미 무너진 컨디션과 감정을 뒤늦게 감당합니다. 대응은 언제나 고통이 시작된 다음이었습니다.</p>
+      </div>
+      <div class="arrow" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="compare-card c-after">
+        <span class="tag">SomaX · 선제적 예방</span>
+        <h3>신호가 보일 때 먼저</h3>
+        <p>몸의 미세한 변화와 호르몬 주기의 흐름을 읽어, 전조 단계에서 케어를 시작합니다. 예방이 곧 치유입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 보유 핵심 기술 ===== -->
+<section class="section-pad" id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">보유 핵심 기술</span>
+      <h2>흩어진 신호를 하나로 읽는 다섯 가지 엔진</h2>
+      <p>측정 → 맞춤 → 지속의 흐름으로, 여성의 몸과 마음 그리고 생애주기를 통합적으로 케어합니다.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature reveal">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="2.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v6M12 13l-4 5M12 13l4 5M6 10h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="kicker">측정 · Vision AI</span>
+        <h3>24개 관절 실시간 추적</h3>
+        <p>스마트폰 카메라로 전신 24개 관절을 추적해 정렬 상태와 각도 변위를 분석, 과신전·틀어짐 등 보상 작용을 즉시 감지합니다.</p>
+        <div class="diff">→ 운동 중 관절 무너짐을 잡아 부상 방지</div>
+      </div>
+      <div class="feature reveal hl">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-6 4 12 2-6h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="kicker">측정 · Biosignal</span>
+        <h3>생체신호(HRV) 능동 케어</h3>
+        <p>웨어러블 API를 연동해 자율신경계 상태를 모니터링하고, 수동 입력 기반 앱의 한계를 넘어 위기 전조를 선제적으로 감지합니다.</p>
+        <div class="diff">→ HRV 급감·심박 급등을 미리 포착</div>
+      </div>
+      <div class="feature reveal">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 109 9c-4.97 0-9-4.03-9-9z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <span class="kicker">맞춤 · Cycle</span>
+        <h3>호르몬 주기별 안전 가동 범위</h3>
+        <p>배란기·황체기의 인대 이완을 감지해 가동 범위를 제한하고, 난포기 에스트로겐 상승 구간에는 고강도 운동을 추천합니다.</p>
+        <div class="diff">→ 여성 월경 4주기에 맞춘 강도 자동 처방</div>
+      </div>
+      <div class="feature reveal">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1116 0M8 12a4 4 0 018 0M12 12v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <span class="kicker">지속 · Somatic</span>
+        <h3>소매틱 음성 큐잉 엔진</h3>
+        <p>뇌과학 기반 대화형 음성 가이드로 화면을 보지 않아도 되는 핸즈프리 몰입 환경을 제공, 편도체를 진정시키고 전전두엽을 활성화합니다.</p>
+        <div class="diff">→ 시각 의존형 서비스의 정렬 붕괴 문제 해소</div>
+      </div>
+      <div class="feature reveal">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 19c4-9 12-9 16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="3" stroke="currentColor" stroke-width="1.8"/></svg></div>
+        <span class="kicker">지속 · Lifecycle</span>
+        <h3>생애주기별 케어 엔진</h3>
+        <p>생체 지표·통증·운동 히스토리를 누적해 가임기→산후기→갱년기→시니어까지 연속적인 맞춤 로드맵을 생성합니다.</p>
+        <div class="diff">→ 생애주기 전반의 데이터 연속성 확보</div>
+      </div>
+      <div class="feature reveal hl">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 22s-7-4.5-7-10a7 7 0 0114 0c0 5.5-7 10-7 10z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg></div>
+        <span class="kicker">통합 · Multimodal</span>
+        <h3>멀티모달 선제 개입</h3>
+        <p>생체신호와 생리 주기를 결합한 분석으로 PMS·스트레스·폭식 위험 시기를 예측하고, 상태별 운동·식단·CBT 콘텐츠를 선제 공급합니다.</p>
+        <div class="diff">→ 사후 트래킹에서 사전 개입으로 전환</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 기술 혁신 ===== -->
+<section class="tech section-pad" id="tech">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">기술 혁신 · 신뢰성</span>
+      <h2>어려운 문제를, 정직하게 마주합니다</h2>
+      <p>신뢰할 수 있는 케어는 신뢰할 수 있는 데이터에서 시작됩니다. SomaX가 지금 풀고 있는 과제와 그 해결 과정을 투명하게 공유합니다.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-block reveal">
+        <span class="num">과제 01</span>
+        <h3>데이터 노이즈와 신뢰도</h3>
+        <p>일반 스마트워치 기기(API)에서 수집되는 생체 데이터에는 노이즈와 신뢰도 이슈가 존재합니다. 우리는 이 한계를 있는 그대로 인정하는 것에서 출발했습니다.</p>
+        <span class="label">우리가 마주한 현실</span>
+      </div>
+      <div class="tech-block reveal">
+        <span class="num">해결 02</span>
+        <h3>보정 알고리즘 · 임상 검증</h3>
+        <p>고도화된 오차 보정 알고리즘을 연구하고, 철저한 임상 유효성 검증을 준비하고 있습니다. 편리함보다 정확함을, 속도보다 신뢰를 먼저 세우겠습니다.</p>
+        <span class="label">우리의 해결 의지</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 사전 등록 ===== -->
+<section class="cta-band" id="waitlist">
+  <div class="wrap reveal">
+    <span class="eyebrow" style="justify-content:center;">사전 등록</span>
+    <h2>당신의 리듬을 먼저 지키는 케어</h2>
+    <p>SomaX의 여정에 가장 먼저 함께해 주세요. 출시 소식을 가장 먼저 전해드립니다.</p>
+    <a href="mailto:jungminhyunjin@gmail.com?subject=SomaX%20사전%20등록%20신청" class="btn btn-primary">사전 등록 신청하기</a>
+  </div>
+</section>
+
+<!-- ===== 푸터 ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="logo">Soma<b>X</b><span class="dot">.</span></div>
+        <p>비전 AI 기반 여성 생애주기별 심신 통합 케어 앱. 고통이 찾아오기 전, 몸과 마음을 선제적으로 지킵니다.</p>
+      </div>
+      <div class="foot-col">
+        <h4>둘러보기</h4>
+        <a href="#home">홈</a>
+        <a href="#story">브랜드 스토리</a>
+        <a href="#features">핵심 기술</a>
+        <a href="#tech">기술 혁신</a>
+      </div>
+      <div class="foot-col">
+        <h4>문의</h4>
+        <a href="mailto:jungminhyunjin@gmail.com">jungminhyunjin@gmail.com</a>
+        <a href="#waitlist">사전 등록</a>
+        <a href="#">보도 · 제휴</a>
+      </div>
+    </div>
+    <p class="disclaimer">
+      SomaX는 건강한 생활을 돕기 위한 웰니스 서비스로, 의료기기가 아니며 질병의 진단·치료·예방을 대체하지 않습니다. 건강에 대한 우려가 있으신 경우 반드시 의료 전문가와 상담하시기 바랍니다. 임상 유효성 검증은 현재 준비 단계에 있습니다.
+    </p>
+    <div class="foot-bottom">
+      <small>© 2026 SomaX. All rights reserved.</small>
+      <small>개인정보처리방침 · 이용약관</small>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById('header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 20);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
+
+  const toggle = document.getElementById('menuToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  links.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    })
+  );
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.14 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+</script>
+</body>
+</html>
