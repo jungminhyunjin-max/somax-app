@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+bandit.db
+bandit.db-*
+.pytest_cache/
